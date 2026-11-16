@@ -4,8 +4,8 @@
 
 set -e
 
-PUID="${PUID:-4096}"
-PGID="${PGID:-4096}"
+PUID="${OPENCODE_UID:-1000}"
+PGID="${OPENCODE_GID:-1000}"
 
 # opencode reads its config and state from here, whether started as root or via --user
 export HOME=/home/opencode
