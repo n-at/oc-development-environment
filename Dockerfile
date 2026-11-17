@@ -23,6 +23,14 @@ RUN apt-get update &&\
         rustc \
         cargo \
         php-cli \
+        php-intl \
+        php-json \
+        php-mbstring \
+        php-pq \
+        php-redis \
+        php-yaml \
+        php-zip \
+        composer \
         wget \
         curl \
         ca-certificates \
