@@ -1,4 +1,4 @@
-# opencode development environment
+# OpenCode development environment
 
 Contains:
 
@@ -11,3 +11,92 @@ Contains:
 + Go 1.27
 + Node.js 26 + npm
 + [postgres-dba-mcp](https://github.com/a-lafon/postgres-dba-mcp)
+
+## Build
+
+```bash
+docker image build -t opencode:latest .
+```
+
+## Run
+
+See `docker-compose.yml`
+
+## Useful plugins and skills
+
+### (opencode-mem)(https://github.com/tickernelz/opencode-mem)
+
+Installation. Add plugin to `~/.config/opencode/opencode.json`:
+
+```json
+  "plugins": ["opencode-mem@2.42.0"]
+```
+
+Configuration. Change defaults in `~/.config/opencode/opencode-mem.jsonc`:
+
+```json
+"embeddingModel": "Xenova/bge-m3", //for multi-language support
+
+"opencodeProvider": "ollama", //or other model provider configured in OpenCode
+"opencodeModel": "inherit", //use current OpenCode model
+
+"autoCaptureEnabled": true,
+"autoCaptureLanguage": "auto",
+```
+
+Memory explorer will be available at http://localhost:4747
+
+### [plannotator](https://github.com/backnotprop/plannotator)
+
+Installation:
+
+```bash
+curl -fsSL https://plannotator.ai/install.sh | bash
+```
+
+Configuration. Add plugin to `~/.config/opencode/opencode.json`:
+
+```json
+"plugins": [
+    {
+        "package": "@plannotator/opencode@latest",
+        "options": {
+            "workflow": "plan-agent",
+            "planningAgents": ["plan"]
+        }
+    }
+]
+```
+
+Environment. To use as remote service:
+
+```bash
+PLANNOTATOR_REMOTE: "1"
+PLANNOTATOR_URL_HOST: "localhost"
+PLANNOTATOR_PORT: "19432"
+PLANNOTATOR_BIN: "/home/opencode/.local/bin/plannotator"
+```
+
+Plannotator will be available at http://localhost:19432
+
+### [opencode-search](https://github.com/whaaaley/opencode-search)
+
+Installation. Add plugin to `~/.config/opencode/opencode.json`:
+
+```json
+  "plugins": ["opencode-search@1.0.0"]
+```
+
+### [superpowers](https://github.com/obra/superpowers)
+
+Installation. Add plugin to `~/.config/opencode/opencode.json`:
+
+```json
+{
+  "plugins": ["superpowers@git+https://github.com/obra/superpowers.git"]
+}
+```
+
+### [oc-mwg](https://github.com/n-at/oc-mwg)
+
+Installation. Copy `skills` directory contents into `~/.config/opencode/skills`
