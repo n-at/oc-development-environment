@@ -61,15 +61,6 @@ ENV LANG="en_US.UTF-8"
 
 USER opencode
 
-#opencode
-EXPOSE 4096
-
-#opencode-mem
-EXPOSE 4747
-
-#plannotator
-EXPOSE 19432
-
 COPY --chmod=0755 entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
