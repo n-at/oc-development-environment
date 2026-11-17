@@ -16,6 +16,7 @@ RUN apt-get update &&\
         git \
         mercurial \
         build-essential \
+        cmake \
         python3 \
         python3-pip \
         openjdk-25-jdk \
@@ -37,12 +38,16 @@ RUN apt-get update &&\
         gnupg \
         mc \
         nano \
+        micro \
+        jq \
+        yq \
         pkg-config \
         software-properties-common \
         locales \
         sudo \
         net-tools \
-        iputils-ping &&\
+        iputils-ping \
+        imagemagick &&\
     rm -rf /var/lib/apt/lists/* &&\
     \
     locale-gen en_US.UTF-8
