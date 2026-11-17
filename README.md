@@ -24,7 +24,7 @@ See `docker-compose.yml`
 
 ## Useful plugins and skills
 
-### (opencode-mem)(https://github.com/tickernelz/opencode-mem)
+### [opencode-mem](https://github.com/tickernelz/opencode-mem)
 
 Installation. Add plugin to `~/.config/opencode/opencode.json`:
 
