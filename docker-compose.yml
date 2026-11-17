@@ -1,0 +1,14 @@
+services:
+  opencode:
+    image: "opencode:latest"
+    container_name: "opencode"
+    volumes:
+      - "./data:/home/opencode"
+    environment:
+      DISABLE_TELEMETRY: "1"
+      PLANNOTATOR_REMOTE: "1"
+      PLANNOTATOR_URL_HOST: "localhost"
+      PLANNOTATOR_PORT: "19432"
+      PLANNOTATOR_BIN: "/home/opencode/.local/bin/plannotator"
+    network_mode: host
+    restart: always
