@@ -33,7 +33,8 @@ RUN apt-get update &&\
         nano \
         pkg-config \
         software-properties-common \
-        locales &&\
+        locales \
+        sudo &&\
     rm -rf /var/lib/apt/lists/*
 
 RUN add-apt-repository -y ppa:longsleep/golang-backports &&\
@@ -59,10 +60,11 @@ RUN locale-gen en_US.UTF-8
 
 ENV LANG="en_US.UTF-8"
 
+RUN echo "opencode ALL=(ALL:ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/opencode &&\
+    chmod 0440 /etc/sudoers.d/opencode
+
 USER opencode
 
 COPY --chmod=0755 entrypoint.sh /usr/local/bin/entrypoint.sh
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-CMD ["opencode", "serve", "--hostname", "0.0.0.0", "--port", "4096"]
+CMD ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
