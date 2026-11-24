@@ -17,65 +17,27 @@ Contains:
 ## Build
 
 ```bash
-docker image build -t opencode:latest .
+docker image build \
+  --build-arg OPENCODE_UID=$(id -u) \
+  --build-arg OPENCODE_GID=$(id -g) \
+  -t opencode:latest \
+  .
 ```
 
 ## Run
 
-See `docker-compose.yml`
+Copy `docker-compose.yml`
 
-## MCP
-
-Add configuration into project `opencode.json`.
-
-### [postgres-dba-mcp](https://github.com/a-lafon/postgres-dba-mcp)
-
-```json
-"mcp": {
-    "servers": {
-      "pg": {
-        "type": "local",
-        "command": ["postgres-dba-mcp"],
-        "environment": {
-          "DATABASE_URI": "postgres://username:password@localhost:5432/dbname"
-        },
-      },
-    },
-  },
+```bash
+mkdir -m 0777 data
+docker compose up -d
 ```
 
-### [ddgs](https://github.com/deedy5/ddgs)
+Use TUI: `docker exec -it opencode opencode`
 
-```json
-"mcp": {
-    "servers": {
-      "ddgs": {
-        "type": "local",
-        "command": ["ddgs", "mcp"],
-      },
-    },
-  },
-```
+Use WebUI: `docker exec -it opencode opencode pair` And open link.
 
-### [dbhub](https://github.com/bytebase/dbhub)
-
-```json
-"mcp": {
-    "servers": {
-      "dbhub": {
-        "type": "local",
-        "command": [
-          "dbhub", 
-          "--transport", "http",
-          "--port", "9876",
-          "--dsn", "postgres://username:password@localhost:5432/dbname"
-        ],
-      },
-    },
-  },
-```
-
-## Plugins
+## Plugins and skills
 
 ### [opencode-mem](https://github.com/tickernelz/opencode-mem)
 
@@ -154,3 +116,54 @@ npx skills add https://github.com/vercel-labs/skills --skill find-skills --agent
 + [affaan-m/ECC](https://github.com/affaan-m/ECC)
 + [samber/cc-skills-golang](https://github.com/samber/cc-skills-golang)
 + [nat/oc-mwg](https://code.doublebyte.ru/nat/oc-modern-web-guidance)
+
+## MCP
+
+Add configuration into project `opencode.json`.
+
+### [postgres-dba-mcp](https://github.com/a-lafon/postgres-dba-mcp)
+
+```json
+"mcp": {
+    "servers": {
+      "pg": {
+        "type": "local",
+        "command": ["postgres-dba-mcp"],
+        "environment": {
+          "DATABASE_URI": "postgres://username:password@localhost:5432/dbname"
+        },
+      },
+    },
+  },
+```
+
+### [ddgs](https://github.com/deedy5/ddgs)
+
+```json
+"mcp": {
+    "servers": {
+      "ddgs": {
+        "type": "local",
+        "command": ["ddgs", "mcp"],
+      },
+    },
+  },
+```
+
+### [dbhub](https://github.com/bytebase/dbhub)
+
+```json
+"mcp": {
+    "servers": {
+      "dbhub": {
+        "type": "local",
+        "command": [
+          "dbhub", 
+          "--transport", "http",
+          "--port", "9876",
+          "--dsn", "postgres://username:password@localhost:5432/dbname"
+        ],
+      },
+    },
+  },
+```

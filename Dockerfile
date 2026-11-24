@@ -1,12 +1,13 @@
 FROM ubuntu:26.04
 
-ENV OPENCODE_VERSION="2.4.1" \
-    GOLANG_VERSION="1.27" \
-    NODE_MAJOR="26" \
-    POSTGRES_DBA_MCP_VERSION="0.4.2" \
-    DBHUB_VERSION="2.1.0" \
-    OPENCODE_UID="1000" \
-    OPENCODE_GID="1000"
+ARG OPENCODE_UID="1000"
+ARG OPENCODE_GID="1000"
+
+ARG OPENCODE_VERSION="2.4.1"
+ARG GOLANG_VERSION="1.27"
+ARG NODE_MAJOR="26"
+ARG POSTGRES_DBA_MCP_VERSION="0.4.2"
+ARG DBHUB_VERSION="2.1.0"
 
 ###############################################################################
 # general dependencies
