@@ -124,6 +124,19 @@ RUN pipx install --global ddgs[mcp]
 RUN npm install -g "@bytebase/dbhub@${DBHUB_VERSION}"
 
 ###############################################################################
+# graphify
+###############################################################################
+
+RUN pipx install --global \
+    "graphifyy" \
+    "graphifyy[pdf]" \
+    "graphifyy[office]" \
+    "graphifyy[svg]" \
+    "graphifyy[mcp]" \
+    "graphifyy[sql]" \
+    "graphifyy[postgres]"
+
+###############################################################################
 # opencode
 ###############################################################################
 

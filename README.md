@@ -13,6 +13,7 @@ Contains:
 + [postgres-dba-mcp](https://github.com/a-lafon/postgres-dba-mcp)
 + [ddgs](https://github.com/deedy5/ddgs)
 + [dbhub](https://github.com/bytebase/dbhub)
++ [Graphify](https://github.com/Graphify-Labs/graphify)
 
 ## Build
 
@@ -106,6 +107,26 @@ npx skills add https://github.com/vercel-labs/skills --skill find-skills
 
 #globally
 npx skills add https://github.com/vercel-labs/skills --skill find-skills --agent opencode -g
+```
+
+### [Graphify](https://github.com/Graphify-Labs/graphify)
+
+Install globally:
+
+```bash
+graphify install --platform opencode
+```
+
+Install in project directory:
+
+```bash
+graphify install --project --platform opencode
+```
+
+In project opened at OpenCode:
+
+```plain
+/graphify .
 ```
 
 ## Skill libraries
