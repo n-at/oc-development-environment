@@ -1,9 +1,9 @@
 FROM ubuntu:26.04
 
-ENV OPENCODE_VERSION="2.3.2" \
+ENV OPENCODE_VERSION="2.4.1" \
     GOLANG_VERSION="1.27" \
     NODE_MAJOR="26" \
-    POSTGRES_DBA_MCP_VERSION="0.3.3" \
+    POSTGRES_DBA_MCP_VERSION="0.4.2" \
     OPENCODE_UID="1000" \
     OPENCODE_GID="1000"
 
@@ -19,6 +19,7 @@ RUN apt-get update &&\
         cmake \
         python3 \
         python3-pip \
+        pipx \
         openjdk-25-jdk \
         maven \
         rustc \
@@ -109,6 +110,12 @@ RUN cd /tmp &&\
     rm -rf /tmp/postgres-dba-mcp
 
 ###############################################################################
+# ddgs[mcp]
+###############################################################################
+
+RUN pipx install --global ddgs[mcp]
+
+###############################################################################
 # opencode
 ###############################################################################
 
@@ -120,6 +127,4 @@ RUN npm i -g "@opencode/cli@${OPENCODE_VERSION}"
 
 USER opencode
 
-COPY --chmod=0755 entrypoint.sh /usr/local/bin/entrypoint.sh
-
-CMD ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
+CMD ["/bin/bash", "-c", "opencode serve --hostname 0.0.0.0 --port 4096"]

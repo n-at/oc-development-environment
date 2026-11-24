@@ -11,6 +11,7 @@ Contains:
 + Go 1.27
 + Node.js 26 + npm
 + [postgres-dba-mcp](https://github.com/a-lafon/postgres-dba-mcp)
++ [ddgs](https://github.com/deedy5/ddgs)
 
 ## Build
 
@@ -22,6 +23,39 @@ docker image build -t opencode:latest .
 
 See `docker-compose.yml`
 
+## MCP
+
+Add configuration into project `opencode.json`.
+
+### postgres-dba-mcp
+
+```json
+"mcp": {
+    "servers": {
+      "pg": {
+        "type": "local",
+        "command": ["postgres-dba-mcp"],
+        "environment": {
+          "DATABASE_URI": "postgres://username:password@localhost:5432/dbname"
+        },
+      },
+    },
+  },
+```
+
+### ddgs
+
+```json
+"mcp": {
+    "servers": {
+      "ddgs": {
+        "type": "local",
+        "command": ["ddgs", "mcp"],
+      },
+    },
+  },
+```
+
 ## Useful plugins and skills
 
 ### [opencode-mem](https://github.com/tickernelz/opencode-mem)
@@ -29,7 +63,7 @@ See `docker-compose.yml`
 Installation. Add plugin to `~/.config/opencode/opencode.json`:
 
 ```json
-  "plugins": ["opencode-mem@2.42.0"]
+  "plugins": ["opencode-mem@2.43.0"]
 ```
 
 Configuration. Change defaults in `~/.config/opencode/opencode-mem.jsonc`:
@@ -79,24 +113,16 @@ PLANNOTATOR_BIN: "/home/opencode/.local/bin/plannotator"
 
 Plannotator will be available at http://localhost:19432
 
-### [opencode-search](https://github.com/whaaaley/opencode-search)
+### [find-skills](https://github.com/vercel-labs/skills)
 
-Installation. Add plugin to `~/.config/opencode/opencode.json`:
+A skill to search and install other skills.
 
-```json
-  "plugins": ["opencode-search@1.0.0"]
+Installation:
+
+```bash
+#in current project
+npx skills add https://github.com/vercel-labs/skills --skill find-skills
+
+#globally
+npx skills add https://github.com/vercel-labs/skills --skill find-skills --agent opencode -g
 ```
-
-### [superpowers](https://github.com/obra/superpowers)
-
-Installation. Add plugin to `~/.config/opencode/opencode.json`:
-
-```json
-{
-  "plugins": ["superpowers@git+https://github.com/obra/superpowers.git"]
-}
-```
-
-### [oc-mwg](https://github.com/n-at/oc-mwg)
-
-Installation. Copy `skills` directory contents into `~/.config/opencode/skills`
