@@ -2,7 +2,7 @@
 
 Contains:
 
-+ OpenCode 2.3
++ OpenCode 2.4
 + Ubuntu 26.04
 + Python 3.14 + pip
 + OpenJDK 25 + maven
@@ -12,6 +12,7 @@ Contains:
 + Node.js 26 + npm
 + [postgres-dba-mcp](https://github.com/a-lafon/postgres-dba-mcp)
 + [ddgs](https://github.com/deedy5/ddgs)
++ [dbhub](https://github.com/bytebase/dbhub)
 
 ## Build
 
@@ -27,7 +28,7 @@ See `docker-compose.yml`
 
 Add configuration into project `opencode.json`.
 
-### postgres-dba-mcp
+### [postgres-dba-mcp](https://github.com/a-lafon/postgres-dba-mcp)
 
 ```json
 "mcp": {
@@ -43,7 +44,7 @@ Add configuration into project `opencode.json`.
   },
 ```
 
-### ddgs
+### [ddgs](https://github.com/deedy5/ddgs)
 
 ```json
 "mcp": {
@@ -56,7 +57,25 @@ Add configuration into project `opencode.json`.
   },
 ```
 
-## Useful plugins and skills
+### [dbhub](https://github.com/bytebase/dbhub)
+
+```json
+"mcp": {
+    "servers": {
+      "dbhub": {
+        "type": "local",
+        "command": [
+          "dbhub", 
+          "--transport", "http",
+          "--port", "9876",
+          "--dsn", "postgres://username:password@localhost:5432/dbname"
+        ],
+      },
+    },
+  },
+```
+
+## Plugins
 
 ### [opencode-mem](https://github.com/tickernelz/opencode-mem)
 
@@ -126,3 +145,12 @@ npx skills add https://github.com/vercel-labs/skills --skill find-skills
 #globally
 npx skills add https://github.com/vercel-labs/skills --skill find-skills --agent opencode -g
 ```
+
+## Skill libraries
+
++ [Skills](https://www.skills.sh/) - skills registry
++ [github/awesome-copilot](https://github.com/github/awesome-copilot)
++ [obra/superpowers](https://github.com/obra/superpowers)
++ [affaan-m/ECC](https://github.com/affaan-m/ECC)
++ [samber/cc-skills-golang](https://github.com/samber/cc-skills-golang)
++ [nat/oc-mwg](https://code.doublebyte.ru/nat/oc-modern-web-guidance)

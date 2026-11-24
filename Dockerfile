@@ -4,6 +4,7 @@ ENV OPENCODE_VERSION="2.4.1" \
     GOLANG_VERSION="1.27" \
     NODE_MAJOR="26" \
     POSTGRES_DBA_MCP_VERSION="0.4.2" \
+    DBHUB_VERSION="2.1.0" \
     OPENCODE_UID="1000" \
     OPENCODE_GID="1000"
 
@@ -116,10 +117,16 @@ RUN cd /tmp &&\
 RUN pipx install --global ddgs[mcp]
 
 ###############################################################################
+# dbhub
+###############################################################################
+
+RUN npm install -g "@bytebase/dbhub@${DBHUB_VERSION}"
+
+###############################################################################
 # opencode
 ###############################################################################
 
-RUN npm i -g "@opencode/cli@${OPENCODE_VERSION}"
+RUN npm install -g "@opencode/cli@${OPENCODE_VERSION}"
 
 ###############################################################################
 # run configuration
