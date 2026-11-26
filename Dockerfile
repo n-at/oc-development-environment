@@ -3,6 +3,18 @@ FROM ubuntu:26.04
 ARG OPENCODE_UID="1000"
 ARG OPENCODE_GID="1000"
 
+ARG INSTALL_CPP="1"
+ARG INSTALL_GOLANG="1"
+ARG INSTALL_JAVA="1"
+ARG INSTALL_RUST="1"
+ARG INSTALL_PHP="1"
+ARG INSTALL_IMAGEMAGICK="1"
+ARG INSTALL_LIBREOFFICE="0"
+ARG INSTALL_POSTGRES_DBA_MCP="1"
+ARG INSTALL_DBHUB="1"
+ARG INSTALL_DDGS="1"
+ARG INSTALL_GRAPHIFY="1"
+
 ARG OPENCODE_VERSION="2.4.1"
 ARG GOLANG_VERSION="1.27"
 ARG NODE_MAJOR="26"
@@ -17,24 +29,9 @@ RUN apt-get update &&\
     apt-get install -y \
         git \
         mercurial \
-        build-essential \
-        cmake \
         python3 \
         python3-pip \
         pipx \
-        openjdk-25-jdk \
-        maven \
-        rustc \
-        cargo \
-        php-cli \
-        php-intl \
-        php-json \
-        php-mbstring \
-        php-pq \
-        php-redis \
-        php-yaml \
-        php-zip \
-        composer \
         wget \
         curl \
         ca-certificates \
@@ -49,8 +46,41 @@ RUN apt-get update &&\
         locales \
         sudo \
         net-tools \
-        iputils-ping \
-        imagemagick &&\
+        iputils-ping &&\
+    \
+    if [ ${INSTALL_CPP} -ne 0 ]; then \
+        apt-get install -y build-essential cmake; \
+    fi &&\
+    \
+    if [ ${INSTALL_RUST} -ne 0 ]; then \
+        apt-get install -y rustc cargo; \
+    fi &&\
+    \
+    if [ ${INSTALL_JAVA} -ne 0 ]; then \
+        apt-get install -y openjdk-25-jdk maven; \
+    fi &&\
+    \
+    if [ ${INSTALL_PHP} -ne 0 ]; then \
+        apt-get install -y \
+            php-cli \
+            php-intl \
+            php-json \
+            php-mbstring \
+            php-pq \
+            php-redis \
+            php-yaml \
+            php-zip \
+            composer; \
+    fi &&\
+    \
+    if [ ${INSTALL_IMAGEMAGICK} -ne 0 ]; then \
+        apt-get install -y imagemagick; \
+    fi &&\
+    \
+    if [ ${INSTALL_LIBREOFFICE} -ne 0 ]; then \
+        apt-get install -y libreoffice; \
+    fi &&\
+    \
     rm -rf /var/lib/apt/lists/* &&\
     \
     locale-gen en_US.UTF-8
@@ -74,15 +104,6 @@ RUN userdel -r ubuntu &&\
     chmod 0440 /etc/sudoers.d/opencode
 
 ###############################################################################
-# golang    
-###############################################################################
-
-RUN add-apt-repository -y ppa:longsleep/golang-backports &&\
-    apt-get update &&\
-    apt-get install -y "golang-${GOLANG_VERSION}" &&\
-    rm -rf /var/lib/apt/lists/*
-
-###############################################################################
 # nodejs    
 ###############################################################################
 
@@ -99,42 +120,61 @@ Signed-By: /etc/apt/keyrings/nodesource.gpg" | tee /etc/apt/sources.list.d/nodes
     rm -rf /var/lib/apt/lists/*
 
 ###############################################################################
+# golang    
+###############################################################################
+
+RUN if [ ${INSTALL_GOLANG} -ne 0 ]; then \
+        add-apt-repository -y ppa:longsleep/golang-backports &&\
+        apt-get update &&\
+        apt-get install -y "golang-${GOLANG_VERSION}" &&\
+        rm -rf /var/lib/apt/lists/*; \
+    fi
+
+###############################################################################
 # postgres-dba-mcp
 ###############################################################################
 
-RUN cd /tmp &&\
-    mkdir postgres-dba-mcp &&\
-    cd postgres-dba-mcp &&\
-    wget -O postgres-dba-mcp.tar.gz "https://github.com/a-lafon/postgres-dba-mcp/releases/download/v${POSTGRES_DBA_MCP_VERSION}/postgres-dba-mcp_${POSTGRES_DBA_MCP_VERSION}_linux_amd64.tar.gz" &&\
-    tar -xvf postgres-dba-mcp.tar.gz &&\
-    mv postgres-dba-mcp /usr/local/bin &&\
-    cd / &&\
-    rm -rf /tmp/postgres-dba-mcp
+RUN if [ ${INSTALL_POSTGRES_DBA_MCP} -ne 0 ]; then \
+        cd /tmp &&\
+        mkdir postgres-dba-mcp &&\
+        cd postgres-dba-mcp &&\
+        wget -O postgres-dba-mcp.tar.gz "https://github.com/a-lafon/postgres-dba-mcp/releases/download/v${POSTGRES_DBA_MCP_VERSION}/postgres-dba-mcp_${POSTGRES_DBA_MCP_VERSION}_linux_amd64.tar.gz" &&\
+        tar -xvf postgres-dba-mcp.tar.gz &&\
+        mv postgres-dba-mcp /usr/local/bin &&\
+        cd / &&\
+        rm -rf /tmp/postgres-dba-mcp; \
+    fi
 
 ###############################################################################
 # ddgs[mcp]
 ###############################################################################
 
-RUN pipx install --global ddgs[mcp]
+RUN if [ ${INSTALL_DDGS} -ne 0 ]; then \
+        pipx install --global ddgs[mcp]; \
+    fi
 
 ###############################################################################
 # dbhub
 ###############################################################################
 
-RUN npm install -g "@bytebase/dbhub@${DBHUB_VERSION}"
+RUN if [ ${INSTALL_DBHUB} -ne 0 ]; then \
+        npm install -g "@bytebase/dbhub@${DBHUB_VERSION}"; \
+    fi
 
 ###############################################################################
 # graphify
 ###############################################################################
 
-RUN pipx install --global \
-    "graphifyy" \
-    "graphifyy[pdf]" \
-    "graphifyy[office]" \
-    "graphifyy[svg]" \
-    "graphifyy[mcp]" \
-    "graphifyy[sql]" \
-    "graphifyy[postgres]"
+RUN if [ ${INSTALL_GRAPHIFY} -ne 0 ]; then \
+    pipx install --global \
+        "graphifyy" \
+        "graphifyy[pdf]" \
+        "graphifyy[office]" \
+        "graphifyy[svg]" \
+        "graphifyy[mcp]" \
+        "graphifyy[sql]" \
+        "graphifyy[postgres]"; \
+    fi
 
 ###############################################################################
 # opencode
