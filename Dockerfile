@@ -8,18 +8,21 @@ ARG INSTALL_GOLANG="1"
 ARG INSTALL_JAVA="1"
 ARG INSTALL_RUST="1"
 ARG INSTALL_PHP="1"
+ARG INSTALL_MERCURIAL="1"
 ARG INSTALL_IMAGEMAGICK="1"
-ARG INSTALL_LIBREOFFICE="0"
+ARG INSTALL_LIBREOFFICE="1"
 ARG INSTALL_POSTGRES_DBA_MCP="1"
 ARG INSTALL_DBHUB="1"
 ARG INSTALL_DDGS="1"
 ARG INSTALL_GRAPHIFY="1"
+ARG INSTALL_GHIDRA="1"
 
-ARG OPENCODE_VERSION="2.4.1"
+ARG OPENCODE_VERSION="2.4.2"
 ARG GOLANG_VERSION="1.27"
 ARG NODE_MAJOR="26"
 ARG POSTGRES_DBA_MCP_VERSION="0.4.2"
 ARG DBHUB_VERSION="2.1.0"
+ARG GHIDRA_VERSION="Ghidra_12.2_build/ghidra_12.2_PUBLIC_20261016"
 
 ###############################################################################
 # general dependencies
@@ -28,7 +31,6 @@ ARG DBHUB_VERSION="2.1.0"
 RUN apt-get update &&\
     apt-get install -y \
         git \
-        mercurial \
         python3 \
         python3-pip \
         pipx \
@@ -52,6 +54,10 @@ RUN apt-get update &&\
         apt-get install -y build-essential cmake; \
     fi &&\
     \
+    if [ ${INSTALL_MERCURIAL} -ne 0 ]; then \
+        apt-get install -y mercurial; \
+    fi &&\
+    \
     if [ ${INSTALL_RUST} -ne 0 ]; then \
         apt-get install -y rustc cargo; \
     fi &&\
@@ -63,11 +69,15 @@ RUN apt-get update &&\
     if [ ${INSTALL_PHP} -ne 0 ]; then \
         apt-get install -y \
             php-cli \
+            php-curl \
             php-intl \
+            php-gd \
             php-json \
             php-mbstring \
-            php-pq \
+            php-pgsql \
+            php-mysql \
             php-redis \
+            php-xml \
             php-yaml \
             php-zip \
             composer; \
@@ -85,7 +95,13 @@ RUN apt-get update &&\
     \
     locale-gen en_US.UTF-8
 
-ENV LANG="en_US.UTF-8"
+###############################################################################
+# env
+###############################################################################
+
+ENV LANG="en_US.UTF-8" \
+    JAVA_HOME="/usr/lib/jvm/java-25-openjdk-amd64" \
+    GHIDRA_INSTALL_DIR="/opt/ghidra_12.2_PUBLIC"
 
 ###############################################################################
 # user & group    
@@ -174,6 +190,17 @@ RUN if [ ${INSTALL_GRAPHIFY} -ne 0 ]; then \
         "graphifyy[mcp]" \
         "graphifyy[sql]" \
         "graphifyy[postgres]"; \
+    fi
+
+###############################################################################
+# ghidra
+###############################################################################
+
+RUN if [ ${INSTALL_GHIDRA} -ne 0 ]; then \
+        cd /opt &&\
+        wget -O ghidra.zip "https://github.com/NationalSecurityAgency/ghidra/releases/download/${GHIDRA_VERSION}.zip" &&\
+        unzip ghidra.zip &&\
+        rm ghidra.zip; \
     fi
 
 ###############################################################################

@@ -14,8 +14,15 @@ Contains:
 + [ddgs](https://github.com/deedy5/ddgs)
 + [dbhub](https://github.com/bytebase/dbhub)
 + [Graphify](https://github.com/Graphify-Labs/graphify)
++ [Ghidra](https://github.com/NationalSecurityAgency/ghidra)
 
 ## Build
+
+```bash
+docker image build -t opencode:latest .
+```
+
+To match internal user `opencode` with current system user, use `OPENCODE_UID` and `OPENCODE_GID` build args:
 
 ```bash
 docker image build \
@@ -23,7 +30,10 @@ docker image build \
   --build-arg OPENCODE_GID=$(id -g) \
   -t opencode:latest \
   .
+
 ```
+
+Other available build args see in `Dockerfile`.
 
 ## Run
 
@@ -94,6 +104,16 @@ PLANNOTATOR_BIN: "/home/opencode/.local/bin/plannotator"
 ```
 
 Plannotator will be available at http://localhost:19432
+
+### [REA](https://github.com/morluto/rea)
+
+Installation:
+
+```bash
+npx rea-agents@latest setup --client opencode
+```
+
+Build image with `--build-arg INSTALL_GHIDRA=1` to enable [Ghidra](https://github.com/NationalSecurityAgency/ghidra) reverse-engineering tools.
 
 ### [find-skills](https://github.com/vercel-labs/skills)
 
